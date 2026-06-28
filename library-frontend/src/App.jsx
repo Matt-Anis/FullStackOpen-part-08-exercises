@@ -20,7 +20,7 @@ const App = () => {
 
       <Authors show={page === "authors"} authorsResult={authorsResult} />
 
-      <Books show={page === "books"} />
+      <Books show={page === "books"} booksResult={booksResult} />
 
       <NewBook show={page === "add"} />
     </div>

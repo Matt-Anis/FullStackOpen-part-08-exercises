@@ -7,6 +7,8 @@ const Authors = ({ show, authorsResult }) => {
     return <div>loading...</div>;
   }
 
+  const authors = authorsResult?.data?.allAuthors ?? [];
+
   return (
     <div>
       <h2>authors</h2>
@@ -17,7 +19,7 @@ const Authors = ({ show, authorsResult }) => {
             <th>born</th>
             <th>books</th>
           </tr>
-          {authorsResult.data.allAuthors.map((a) => (
+          {authors.map((a) => (
             <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born}</td>
