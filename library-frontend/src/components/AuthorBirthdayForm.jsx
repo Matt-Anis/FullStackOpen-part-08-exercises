@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { CHANGE_BIRTHDAY, ALL_AUTHORS } from "../queries";
 
-const AuthorBirthdayForm = () => {
+const AuthorBirthdayForm = ({ authors }) => {
   const [name, setName] = useState("");
   const [birthYear, setBirthYear] = useState("");
 
@@ -26,12 +26,13 @@ const AuthorBirthdayForm = () => {
         <div>
           <label>
             name
-            <input
-              type="text"
-              required
-              value={name}
-              onChange={({ target }) => setName(target.value)}
-            />
+            <select value={name} onChange={(e) => setName(e.target.value)}>
+              {authors.map((author) => (
+                <option key={author.name} value={author.name}>
+                  {author.name}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
         <div>
