@@ -1,3 +1,5 @@
+import AuthorBirthdayForm from "./AuthorBirthdayForm";
+
 const Authors = ({ show, authorsResult }) => {
   if (!show) {
     return null;
@@ -28,6 +30,7 @@ const Authors = ({ show, authorsResult }) => {
           ))}
         </tbody>
       </table>
+      <AuthorBirthdayForm />
     </div>
   );
 };
