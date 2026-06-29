@@ -1,6 +1,8 @@
 const Book = require("./models/book");
 const Author = require("./models/author");
 
+const { GraphQLError } = require("graphql");
+
 const resolvers = {
   Query: {
     bookCount: async (root, args) => {
@@ -36,6 +38,23 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
+      if (args.title.length < 3) {
+        throw new GraphQLError("title min length is 3", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalideArgs: args.title,
+          },
+        });
+      }
+      if (args.title.author < 3) {
+        throw new GraphQLError("author name min length is 3", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalideArgs: args.author,
+          },
+        });
+      }
+
       let author = await Author.findOne({ name: args.author });
       if (!author) {
         author = new Author({ name: args.author });
