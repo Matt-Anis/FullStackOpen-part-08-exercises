@@ -27,7 +27,7 @@ const typeDefs = `
   type Query {
    bookCount(author: String): Int!
    authorCount: Int!
-   allBooks(author: String, genres: [String!]): [Book!]!
+   allBooks(author: String, genre: String): [Book!]!
    allAuthors: [Author!]!
    me: User
   }
@@ -39,7 +39,7 @@ const typeDefs = `
       published: Int!,
       genres: [String!]!
     ): Book!
-    editAuthor(name: String!, setBornTo: Int!): Author!
+    editAuthor(name: String!, setBornTo: Int!): Author
     createUser(
         username: String!
         favoriteGenre: String!
@@ -48,6 +48,7 @@ const typeDefs = `
       username: String!
       password: String!
     ): Token
+    _resetDatabase: Boolean
   }
 `;
 

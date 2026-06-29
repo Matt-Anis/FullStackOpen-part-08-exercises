@@ -13,20 +13,20 @@ const resolvers = {
     },
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      if (args.author && args.genres) {
+      if (args.author && args.genre) {
         return Book.find({
           author: { $eq: args.author },
-          genres: { $all: args.genres },
+          genres: args.genre,
         }).populate("author");
       }
-      if (args.author && !args.genres) {
+      if (args.author && !args.genre) {
         return Book.find({
           author: { $eq: args.author },
         }).populate("author");
       }
-      if (!args.author && args.genres) {
+      if (!args.author && args.genre) {
         return Book.find({
-          genres: { $all: args.genres },
+          genres: args.genre,
         }).populate("author");
       }
       return Book.find({}).populate("author");
@@ -113,7 +113,7 @@ const resolvers = {
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
 
-      if (!user || !args.password === "secret") {
+      if (!user || args.password !== "secret") {
         throw new GraphQLError("wrong credentials", {
           extensions: {
             code: "BAD_USER_INPUT",
@@ -127,6 +127,15 @@ const resolvers = {
       };
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+    },
+    _resetDatabase: async () => {
+      if (process.env.NODE_ENV !== "test") {
+        throw new GraphQLError("_resetDatabase is only available in test mode");
+      }
+      await Author.deleteMany({});
+      await Book.deleteMany({});
+      await User.deleteMany({});
+      return true;
     },
   },
 };
