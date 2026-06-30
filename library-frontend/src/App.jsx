@@ -3,28 +3,12 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
-import AuthorBirthdayForm from "./components/AuthorBirthdayForm";
 import Recommended from "./components/Recommended";
-import { useQuery, useApolloClient } from "@apollo/client/react";
-import { ALL_AUTHORS, ALL_BOOKS, ME } from "./queries";
+import { useAuth } from "./hooks/useAuth";
 
 const App = () => {
-  const client = useApolloClient();
-
+  const { token, logout } = useAuth();
   const [page, setPage] = useState("authors");
-  const [token, setToken] = useState(
-    localStorage.getItem("library-user-token"),
-  );
-  const authorsResult = useQuery(ALL_AUTHORS);
-  const booksResult = useQuery(ALL_BOOKS);
-  const currentUser = useQuery(ME, { skip: !token });
-
-  const handleLogout = () => {
-    localStorage.removeItem("library-user-token");
-    setToken("");
-    client.cache.evict({ fieldName: "me" });
-    client.cache.gc();
-  };
 
   return (
     <div>
@@ -36,24 +20,18 @@ const App = () => {
         {token && (
           <button onClick={() => setPage("recommended")}>recommended</button>
         )}
-        {token && <button onClick={handleLogout}>logout</button>}
+        {token && <button onClick={logout}>logout</button>}
       </div>
 
-      <Authors show={page === "authors"} authorsResult={authorsResult}>
-        {token && <AuthorBirthdayForm authorsResult={authorsResult} />}
-      </Authors>
+      <Authors show={page === "authors"} token={token} />
 
       <Books show={page === "books"} />
 
       <NewBook show={page === "add"} />
 
-      <Recommended
-        show={page === "recommended"}
-        currentUser={currentUser}
-        booksResult={booksResult}
-      />
+      <Recommended show={page === "recommended"} />
 
-      <LoginForm show={page === "login" && !token} setToken={setToken} />
+      <LoginForm show={page === "login" && !token} />
     </div>
   );
 };

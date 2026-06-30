@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { useQuery } from "@apollo/client/react";
+import { useBooks } from "../hooks/useBooks";
 import GenresFilter from "./GenresFilter";
-import { ALL_BOOKS } from "../queries";
 
 const Books = ({ show }) => {
   const [filter, setFilter] = useState("");
-  const booksResult = useQuery(ALL_BOOKS, {
-    variables: filter ? { genre: filter } : {},
-  });
+  const booksResult = useBooks(filter);
 
   if (!show) return null;
   if (booksResult.loading) return <div>loading...</div>;

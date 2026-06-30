@@ -1,8 +1,7 @@
-import { useQuery } from "@apollo/client/react";
-import ALL_BOOKS from "../queries";
+import { useBooks } from "../hooks/useBooks";
 
 const GenresFilter = ({ setFilter }) => {
-  const booksResult = useQuery(ALL_BOOKS);
+  const booksResult = useBooks();
   if (booksResult.loading) {
     return null;
   }

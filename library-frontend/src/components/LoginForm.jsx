@@ -1,28 +1,21 @@
 import { useState } from "react";
-import { useMutation } from "@apollo/client/react";
-import { LOGIN } from "../queries";
+import { useAuth } from "../hooks/useAuth";
 
-const LoginForm = ({ show, setToken }) => {
+const LoginForm = ({ show }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [login] = useMutation(LOGIN, {
-    onCompleted: (data) => {
-      const token = data.login.value;
-      setToken(token);
-      localStorage.setItem("library-user-token", token);
-      setUsername("");
-      setPassword("");
-      console.log("logged in");
-    },
-    onError: (error) => {
-      console.error(error.message);
-    },
-  });
+  const { login } = useAuth();
 
   const submit = (event) => {
     event.preventDefault();
-    login({ variables: { username, password } });
+    try {
+      login(username, password);
+    } catch (error) {
+      console.error(error);
+    }
+    setPassword("");
+    setUsername("");
   };
 
   if (!show) {

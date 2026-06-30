@@ -1,10 +1,12 @@
+import { useAuthors } from "../hooks/useAuthors";
 import AuthorBirthdayForm from "./AuthorBirthdayForm";
 
-const Authors = ({ show, authorsResult, children }) => {
+const Authors = ({ show, token }) => {
+  const authorsResult = useAuthors();
+
   if (!show) {
     return null;
   }
-
   if (authorsResult.loading) {
     return <div>loading...</div>;
   }
@@ -30,7 +32,7 @@ const Authors = ({ show, authorsResult, children }) => {
           ))}
         </tbody>
       </table>
-      {children}
+      {token && <AuthorBirthdayForm authorsResult={authorsResult} />}
     </div>
   );
 };

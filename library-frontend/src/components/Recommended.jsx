@@ -1,8 +1,12 @@
-const Recommended = ({ show, booksResult, currentUser }) => {
+import { useBooks } from "../hooks/useBooks";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+
+const Recommended = ({ show }) => {
+  const currentUser = useCurrentUser();
+  const booksResult = useBooks();
   if (!show || !currentUser) {
     return null;
   }
-  console.log(currentUser);
 
   if (booksResult.loading) {
     return <div>loading...</div>;
