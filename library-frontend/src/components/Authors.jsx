@@ -1,6 +1,6 @@
 import AuthorBirthdayForm from "./AuthorBirthdayForm";
 
-const Authors = ({ show, authorsResult }) => {
+const Authors = ({ show, authorsResult, children }) => {
   if (!show) {
     return null;
   }
@@ -30,7 +30,7 @@ const Authors = ({ show, authorsResult }) => {
           ))}
         </tbody>
       </table>
-      <AuthorBirthdayForm authors={authors} />
+      {children}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { CHANGE_BIRTHDAY, ALL_AUTHORS } from "../queries";
 
-const AuthorBirthdayForm = ({ authors }) => {
+const AuthorBirthdayForm = ({ authorsResult }) => {
   const [name, setName] = useState("");
   const [birthYear, setBirthYear] = useState("");
 
@@ -18,6 +18,12 @@ const AuthorBirthdayForm = ({ authors }) => {
     setName("");
     setBirthYear("");
   };
+
+  if (authorsResult.loading) {
+    return null;
+  }
+
+  const authors = authorsResult?.data?.allAuthors ?? [];
 
   return (
     <div>
