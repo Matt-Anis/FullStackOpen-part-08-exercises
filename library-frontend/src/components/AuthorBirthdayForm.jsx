@@ -23,12 +23,16 @@ const AuthorBirthdayForm = ({ authorsResult }) => {
 
   return (
     <div>
-      <h2>Set brithYear</h2>
+      <h2>Set birthyear</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>
             name
-            <select value={name} onChange={(e) => setName(e.target.value)}>
+            <select
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            >
               {authors.map((author) => (
                 <option key={author.name} value={author.name}>
                   {author.name}
@@ -39,7 +43,7 @@ const AuthorBirthdayForm = ({ authorsResult }) => {
         </div>
         <div>
           <label>
-            birthyear
+            born
             <input
               type="number"
               required
@@ -49,9 +53,9 @@ const AuthorBirthdayForm = ({ authorsResult }) => {
           </label>
         </div>
         <div>
-          <label>
-            <button type="submit">change</button>
-          </label>
+          <button type="submit" name="update author">
+            update author
+          </button>
         </div>
       </form>
     </div>

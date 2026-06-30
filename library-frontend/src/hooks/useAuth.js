@@ -18,13 +18,10 @@ export const useAuth = () => {
       localStorage.setItem(TOKEN_KEY, newToken);
       tokenVar(newToken);
     },
-    onError: (error) => {
-      console.error(error.message);
-    },
   });
 
   const login = (username, password) => {
-    handleLogin({ variables: { username, password } });
+    return handleLogin({ variables: { username, password } });
   };
 
   const logout = () => {

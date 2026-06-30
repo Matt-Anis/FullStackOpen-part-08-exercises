@@ -19,7 +19,9 @@ const Recommended = ({ show }) => {
 
   return (
     <div>
-      <h2>books for your favorite genre {currentUser.data.me.favoriteGenre}</h2>
+      <h1>recommendations</h1>
+      <h2>books in your favorite genre </h2>
+      <h3>{currentUser.data.me.favoriteGenre}</h3>
       <table>
         <tbody>
           <tr>

@@ -4,18 +4,20 @@ import { useAuth } from "../hooks/useAuth";
 const LoginForm = ({ show }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [notification, setNotification] = useState("");
 
   const { login } = useAuth();
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     try {
-      login(username, password);
-    } catch (error) {
-      console.error(error);
+      await login(username, password);
+      setPassword("");
+      setUsername("");
+    } catch {
+      setNotification("login failed");
+      setTimeout(() => setNotification(""), 5000);
     }
-    setPassword("");
-    setUsername("");
   };
 
   if (!show) {
@@ -24,21 +26,26 @@ const LoginForm = ({ show }) => {
 
   return (
     <div>
+      <span>{notification}</span>
       <form onSubmit={submit}>
         <div>
-          username{" "}
-          <input
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
+          <label>
+            username
+            <input
+              value={username}
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </label>
         </div>
         <div>
-          password{" "}
-          <input
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
+          <label>
+            password
+            <input
+              type="password"
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </label>
         </div>
         <button type="submit">login</button>
       </form>

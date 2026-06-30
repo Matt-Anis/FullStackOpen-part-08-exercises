@@ -14,6 +14,7 @@ const Books = ({ show }) => {
   return (
     <div>
       <h2>books</h2>
+      {filter && <h3>in genre</h3>}
       <table>
         <tbody>
           <tr>

@@ -11,7 +11,7 @@ const GenresFilter = ({ setFilter }) => {
 
   return (
     <div>
-      <button onClick={() => setFilter("")}>All</button>
+      <button onClick={() => setFilter("")}>all genres</button>
       {allGenres.map((genre) => (
         <button key={genre} onClick={() => setFilter(genre)}>
           {genre}
