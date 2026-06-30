@@ -4,7 +4,6 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
 import AuthorBirthdayForm from "./components/AuthorBirthdayForm";
-import GenresFilter from "./components/GenresFilter";
 import Recommended from "./components/Recommended";
 import { useQuery, useApolloClient } from "@apollo/client/react";
 import { ALL_AUTHORS, ALL_BOOKS, ME } from "./queries";
@@ -16,7 +15,6 @@ const App = () => {
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token"),
   );
-  const [filter, setFilter] = useState("");
   const authorsResult = useQuery(ALL_AUTHORS);
   const booksResult = useQuery(ALL_BOOKS);
   const currentUser = useQuery(ME, { skip: !token });
@@ -45,9 +43,7 @@ const App = () => {
         {token && <AuthorBirthdayForm authorsResult={authorsResult} />}
       </Authors>
 
-      <Books show={page === "books"} booksResult={booksResult} filter={filter}>
-        <GenresFilter setFilter={setFilter} booksResult={booksResult} />
-      </Books>
+      <Books show={page === "books"} />
 
       <NewBook show={page === "add"} />
 

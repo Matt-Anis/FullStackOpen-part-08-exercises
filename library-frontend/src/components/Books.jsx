@@ -1,22 +1,22 @@
-const Books = ({ show, booksResult, filter, children }) => {
-  if (!show) {
-    return null;
-  }
+import { useState } from "react";
+import { useQuery } from "@apollo/client/react";
+import GenresFilter from "./GenresFilter";
+import { ALL_BOOKS } from "../queries";
 
-  if (booksResult.loading) {
-    return <div>loading...</div>;
-  }
+const Books = ({ show }) => {
+  const [filter, setFilter] = useState("");
+  const booksResult = useQuery(ALL_BOOKS, {
+    variables: filter ? { genre: filter } : {},
+  });
+
+  if (!show) return null;
+  if (booksResult.loading) return <div>loading...</div>;
 
   const books = booksResult.data?.allBooks ?? [];
-  const filtredBooks =
-    filter === ""
-      ? books
-      : books.filter((book) => book.genres.includes(filter));
 
   return (
     <div>
       <h2>books</h2>
-
       <table>
         <tbody>
           <tr>
@@ -24,7 +24,7 @@ const Books = ({ show, booksResult, filter, children }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {filtredBooks.map((a) => (
+          {books.map((a) => (
             <tr key={a.id}>
               <td>{a.title}</td>
               <td>{a.author?.name}</td>
@@ -33,7 +33,7 @@ const Books = ({ show, booksResult, filter, children }) => {
           ))}
         </tbody>
       </table>
-      {children}
+      <GenresFilter setFilter={setFilter} />
     </div>
   );
 };
