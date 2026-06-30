@@ -1,19 +1,15 @@
 import { useState } from "react";
-import { useMutation } from "@apollo/client/react";
-import { CHANGE_BIRTHDAY, ALL_AUTHORS } from "../queries";
+import { useChangeAuthorBirthday } from "../hooks/useAuthors";
 
 const AuthorBirthdayForm = ({ authorsResult }) => {
   const [name, setName] = useState("");
   const [birthYear, setBirthYear] = useState("");
-
-  const [changeBirthYear] = useMutation(CHANGE_BIRTHDAY, {
-    refetchQueries: [{ query: ALL_AUTHORS }],
-  });
+  const { changeBirthYear } = useChangeAuthorBirthday();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    changeBirthYear({ variables: { name, setBornTo: parseInt(birthYear) } });
+    changeBirthYear(name, parseInt(birthYear));
 
     setName("");
     setBirthYear("");
