@@ -1,4 +1,4 @@
-const Books = ({ show, booksResult }) => {
+const Books = ({ show, booksResult, filter, children }) => {
   if (!show) {
     return null;
   }
@@ -8,6 +8,10 @@ const Books = ({ show, booksResult }) => {
   }
 
   const books = booksResult.data?.allBooks ?? [];
+  const filtredBooks =
+    filter === ""
+      ? books
+      : books.filter((book) => book.genres.includes(filter));
 
   return (
     <div>
@@ -20,7 +24,7 @@ const Books = ({ show, booksResult }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
+          {filtredBooks.map((a) => (
             <tr key={a.id}>
               <td>{a.title}</td>
               <td>{a.author?.name}</td>
@@ -29,6 +33,7 @@ const Books = ({ show, booksResult }) => {
           ))}
         </tbody>
       </table>
+      {children}
     </div>
   );
 };
