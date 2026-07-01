@@ -79,7 +79,18 @@ const resolvers = {
       const book = new Book({ ...args, author: author._id });
       const result = await book.save();
 
-      pubsub.publish("BOOK_ADDED", { bookAdded: result });
+      pubsub.publish("BOOK_ADDED", {
+        bookAdded: {
+          ...result.toObject(),
+          id: result._id.toString(),
+          author: {
+            ...author.toObject(),
+            id: author._id.toString(),
+            born: author.born ?? null,
+            bookCount: await Book.countDocuments({ author: author._id }),
+          },
+        },
+      });
 
       return result.populate("author");
     },
