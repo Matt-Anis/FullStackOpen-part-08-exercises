@@ -5,8 +5,9 @@ const GenresFilter = ({ setFilter }) => {
   if (booksResult.loading) {
     return null;
   }
+  console.log(booksResult);
 
-  const books = booksResult.data.allBooks ?? [];
+  const books = booksResult.data?.allBooks ?? [];
   const allGenres = [...new Set(books.flatMap((book) => book.genres))];
 
   return (

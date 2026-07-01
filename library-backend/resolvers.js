@@ -34,18 +34,13 @@ const resolvers = {
       }
       return Book.find({}).populate("author");
     },
-    allAuthors: async () => {
-      const authors = await Author.find({});
-      const bookCounts = await Book.aggregate([
-        { $group: { _id: "$author", count: { $sum: 1 } } },
-      ]);
-      return authors.map((author) => ({
-        ...author.toObject(),
-        id: author._id.toString(),
-        bookCount: bookCounts.find((b) => b._id.equals(author._id))?.count ?? 0,
-      }));
-    },
+    allAuthors: async () => await Author.find({}),
     me: (root, args, context) => context.currentUser,
+  },
+  Author: {
+    bookCount: async (root) => {
+      return Book.countDocuments({ author: root._id });
+    },
   },
   Mutation: {
     addBook: async (root, args, context) => {
