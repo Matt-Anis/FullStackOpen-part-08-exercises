@@ -2,8 +2,11 @@ const Book = require("./models/book");
 const Author = require("./models/author");
 const User = require("./models/user");
 
+const { PubSub } = require("graphql-subscriptions");
 const { GraphQLError } = require("graphql");
 const jwt = require("jsonwebtoken");
+
+const pubsub = new PubSub();
 
 const resolvers = {
   Query: {
@@ -75,6 +78,9 @@ const resolvers = {
       }
       const book = new Book({ ...args, author: author._id });
       const result = await book.save();
+
+      pubsub.publish("BOOK_ADDED", { bookAdded: result });
+
       return result.populate("author");
     },
     editAuthor: async (root, args, context) => {
@@ -136,6 +142,11 @@ const resolvers = {
       await Book.deleteMany({});
       await User.deleteMany({});
       return true;
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterableIterator("BOOK_ADDED"),
     },
   },
 };
